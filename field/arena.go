@@ -252,6 +252,28 @@ func (arena *Arena) LoadMatch(match *model.Match) error {
 		if err != nil {
 			log.Printf("Failed to load lineup from Nexus: %s", err.Error())
 		} else {
+
+			//sanitize the data on this side, allows for the queuer to only input the teams
+			//that are changes from the previous
+			if lineup[0] == 0 {
+				lineup[0] = match.Red1
+			}
+			if lineup[1] == 0 {
+				lineup[1] = match.Red2
+			}
+			if lineup[2] == 0 {
+				lineup[2] = match.Red3
+			}
+			if lineup[3] == 0 {
+				lineup[3] = match.Blue1
+			}
+			if lineup[4] == 0 {
+				lineup[4] = match.Blue2
+			}
+			if lineup[5] == 0 {
+				lineup[5] = match.Blue3
+			}
+
 			err = arena.SubstituteTeams(lineup[0], lineup[1], lineup[2], lineup[3], lineup[4], lineup[5])
 			if err != nil {
 				log.Printf("Failed to substitute teams using Nexus lineup; loading match normally: %s", err.Error())
